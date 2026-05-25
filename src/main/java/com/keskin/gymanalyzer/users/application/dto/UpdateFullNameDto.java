@@ -1,6 +1,7 @@
 package com.keskin.gymanalyzer.users.application.dto;
 
 public record UpdateFullNameDto(
-        String fullName
+        String firstName,
+        String lastName
 ) {
 }
