@@ -38,7 +38,7 @@ public record FullName (
         return Objects.hash(firstName, lastName);
     }
 
-    public String getFullName() {
+    public String getDisplayName() {
         return firstName + " " + lastName;
     }
 }

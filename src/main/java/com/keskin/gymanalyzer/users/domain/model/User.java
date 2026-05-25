@@ -49,7 +49,7 @@ public class User extends BaseEntity {
 
     private void validateAuditor(String auditor){
         if (auditor == null || auditor.isBlank()) {
-            throw new InvalidValidationException("Auditor information is required for promotion.");
+            throw new InvalidValidationException("Auditor information is required.");
         }
     }
 
@@ -72,5 +72,32 @@ public class User extends BaseEntity {
         validateAuditor(auditor);
 
         markAsDeleted(auditor);
+    }
+
+    public void updateFullName(FullName newFullName, String auditor) {
+        validateAuditor(auditor);
+        this.fullName = newFullName;
+        updateAudit(auditor);
+    }
+
+    public void updateAge(Age newAge, String auditor) {
+        validateAuditor(auditor);
+        this.age = newAge;
+        updateAudit(auditor);
+    }
+
+    public void updateEmail(Email newEmail, String auditor) {
+        validateAuditor(auditor);
+        this.email = newEmail;
+        updateAudit(auditor);
+    }
+
+    public void changePassword(Password newPassword, String auditor){
+        if (newPassword.equals(this.password)){
+            throw new InvalidValidationException("New password can't be same with old password");
+        }
+        validateAuditor(auditor);
+        this.password = newPassword;
+        updateAudit(auditor);
     }
 }

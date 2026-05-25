@@ -10,11 +10,11 @@ public class Email {
     private static final Pattern PATTERN =
             Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9-]+\\.[A-Za-z]{2,}$");
 
-    private final String email;
+    private final String value;
 
     public Email(String email) {
         validate(email);
-        this.email = email.toLowerCase().trim();
+        this.value = email.toLowerCase().trim();
     }
 
     private void validate(String email) {
@@ -28,11 +28,11 @@ public class Email {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Email other)) return false;
-        return email.equalsIgnoreCase(other.email);
+        return value.equalsIgnoreCase(other.value);
     }
 
     @Override
     public int hashCode() {
-        return email.toLowerCase().hashCode();
+        return value.toLowerCase().hashCode();
     }
 }

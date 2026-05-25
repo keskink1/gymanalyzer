@@ -5,12 +5,11 @@ import com.keskin.gymanalyzer.common.exception.InvalidValidationException;
 import java.util.Objects;
 
 public record Age(
-        Integer age
+        Integer value
 ) {
-
-    public Age(Integer age) {
-        validate(age);
-        this.age = age;
+    public Age(Integer value) {
+        validate(value);
+        this.value = value;
     }
 
     private void validate(Integer age){
@@ -22,11 +21,11 @@ public record Age(
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Age age1 = (Age) o;
-        return Objects.equals(age, age1.age);
+        return Objects.equals(value, age1.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(age);
+        return Objects.hashCode(value);
     }
 }

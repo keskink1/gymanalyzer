@@ -8,7 +8,6 @@ import com.keskin.gymanalyzer.users.domain.valueobject.FullName;
 import com.keskin.gymanalyzer.users.domain.valueobject.Password;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -58,6 +57,6 @@ public class UserEntityTest {
         User admin = User.createUser("system", new FullName("Admin", "User"), new Age(22), new Email("johndoe@gmail.com"), new Password("John123!*"));
         admin.promoteToAdmin("system");
 
-        assertThrows(IllegalStateException.class, () -> admin.deleteUser("system"));
+        assertThrows(InvalidValidationException.class, () -> admin.deleteUser("system"));
     }
 }

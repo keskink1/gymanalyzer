@@ -1,40 +1,58 @@
-
-
-# Gym Tracker Domain Model & Rules
-
-## 1. System Architecture (UML)
-```mermaid
+```
 classDiagram
     class BaseEntity {
         <<Abstract>>
-        +DateTime createdAt
-        +UUID createdBy
-        +DateTime updatedAt
-        +UUID updatedBy
-        +DateTime deletedAt
-        +UUID deletedBy
+        +UUID uuid
+        +LocalDateTime createdAt
+        +String createdBy
+        +LocalDateTime updatedAt
+        +String updatedBy
+        +LocalDateTime deletedAt
+        +String deletedBy
+        +boolean deleted
+        +markAsDeleted(String deletedBy)
+        +updateAudit(String updatedBy)
     }
-   class User {
-        +FullName name
+    class User {
+        +FullName fullName
         +Email email
         +Password password
         +Age age
-    }
-    class Exercise {
-        +ExerciseName name
-        +Description description
-        +Category category
-        +Difficulty difficulty
+        +Role role
+        +createUser(String createdBy, FullName, Age, Email, Password) User
+        +promoteToAdmin(String auditor)
+        +deleteUser(String auditor)
+        +updateFullName(FullName, String auditor)
+        +updateAge(Age, String auditor)
+        +updateEmail(Email, String auditor)
+        +changePassword(Password, String auditor)
     }
     class Workout {
-        +WorkoutName name
-        +LocalDate scheduledDate
-        +List~WorkoutSet~ sets
-    }
-    class WorkoutSet {
-        +SetNumber setNumber
-        +Repetitions reps
+        +UUID userUuid
+        +ExerciseType exerciseType
         +Weight weight
-        +Exercise exercise
+        +Reps reps
+        +Sets sets
+        +LocalDate loggedAt
+        +logWorkout(String createdBy, UUID userUuid, ExerciseType, Weight, Reps, Sets, LocalDate) Workout
+        +deleteWorkout(String auditor)
     }
+    class Role {
+        <<Enumeration>>
+        USER
+        ADMIN
+    }
+    class ExerciseType {
+        <<Enumeration>>
+        SQUAT
+        BENCH_PRESS
+        DEADLIFT
+        OVERHEAD_PRESS
+        BARBELL_ROW
+    }
+    BaseEntity <|-- User
+    BaseEntity <|-- Workout
+    User *-- Role
+    Workout *-- ExerciseType
+    User "1" --> "0..*" Workout : logs
 ```

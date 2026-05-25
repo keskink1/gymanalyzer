@@ -2,6 +2,7 @@ package com.keskin.gymanalyzer.common.exception;
 
 import com.keskin.gymanalyzer.common.dto.ErrorResponseDto;
 import io.swagger.v3.oas.annotations.Hidden;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
  */
 @Hidden
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     /**
@@ -25,6 +27,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(ResourceNotFoundException ex) {
+        log.warn("Resource not found: {}", ex.getMessage());
         return buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
@@ -34,6 +37,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ResourceAlreadyExistsException.class)
     public ResponseEntity<ErrorResponseDto> handleResourceAlreadyExistsException(ResourceAlreadyExistsException ex) {
+        log.warn("Resource already exists: {}", ex.getMessage());
         return buildErrorResponse(HttpStatus.CONFLICT, ex.getMessage());
     }
 
@@ -52,7 +56,8 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDto> handleGeneralException(Exception ex) {
-        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred: " + ex.getMessage());
+        log.error("Unexpected error occurred", ex);
+        return buildErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred: ");
     }
 
 
@@ -61,7 +66,8 @@ public class GlobalExceptionHandler {
      * @return 401 Unauthorized
      */
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ErrorResponseDto> handleInvalidLoginCredentials() {
+    public ResponseEntity<ErrorResponseDto> handleInvalidLoginCredentials(AuthenticationException ex) {
+        log.warn("Authentication failed: {}", ex.getMessage());
         return buildErrorResponse(HttpStatus.UNAUTHORIZED, "Invalid email or password");
     }
 
