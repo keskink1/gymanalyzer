@@ -41,7 +41,7 @@ public class UserPersistenceMapper {
                 entity.getUpdatedAt(),
                 entity.getUpdatedBy(),
                 new FullName(entity.getFirstName(), entity.getLastName()),
-                new Password(entity.getPassword()),
+                Password.hashed(entity.getPassword()),
                 new Email(entity.getEmail()),
                 new Age(entity.getAge()),
                 entity.getRole()

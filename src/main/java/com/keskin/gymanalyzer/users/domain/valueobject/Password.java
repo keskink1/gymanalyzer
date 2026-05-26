@@ -8,36 +8,54 @@ import java.util.regex.Pattern;
 
 @Getter
 public class Password {
-    private final String value;
 
-    private static final String REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$";
+    private final String value;
+    private final boolean hashed;
+
+    private static final String REGEX =
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{6,}$";
+
     private static final Pattern PATTERN = Pattern.compile(REGEX);
 
-    public Password(String value) {
-        if (value == null || !isValid(value)) {
-            throw new InvalidValidationException("Password must be at least 6 characters, containing 1 capital letter, 1 small letter, 1 number and 1 special character.");
-        }
+    // raw password constructor. only for validation
+    private Password(String value, boolean hashed) {
         this.value = value;
+        this.hashed = hashed;
+    }
+
+    public static Password rawValidated(String value) {
+        if (value == null || !PATTERN.matcher(value).matches()) {
+            throw new InvalidValidationException(
+                    "Password must be at least 6 characters, contain uppercase, lowercase, number and special char."
+            );
+        }
+        return new Password(value, false);
+    }
+
+    // hashed password, no validation
+    public static Password hashed(String value) {
+        return new Password(value, true);
+    }
+
+    public boolean isHashed() {
+        return hashed;
+    }
+
+    @Override
+    public String toString() {
+        return "*******";
     }
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) return true;
+        if (!(o instanceof Password)) return false;
         Password password = (Password) o;
         return Objects.equals(value, password.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(value);
-    }
-
-    private boolean isValid(String value) {
-        return PATTERN.matcher(value).matches();
-    }
-
-    @Override
-    public String toString() {
-        return "*******";
+        return Objects.hash(value);
     }
 }

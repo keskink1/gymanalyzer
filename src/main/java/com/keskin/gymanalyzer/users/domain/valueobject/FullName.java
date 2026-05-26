@@ -10,9 +10,13 @@ public record FullName (
 ){
 
     public FullName(String firstName, String lastName) {
-        validate(firstName,lastName);
-        this.firstName = firstName.trim();
-        this.lastName = lastName.trim();
+        String trimmedFirst = firstName == null ? null : firstName.trim();
+        String trimmedLast  = lastName  == null ? null : lastName.trim();
+
+        validate(trimmedFirst, trimmedLast);
+
+        this.firstName = trimmedFirst;
+        this.lastName  = trimmedLast;
     }
 
     private void validate(String firstName, String lastName) {
@@ -20,9 +24,9 @@ public record FullName (
             throw new InvalidValidationException("First name cannot be null or blank.");
         if (lastName == null || lastName.isBlank())
             throw new InvalidValidationException("Last name cannot be null or blank.");
-        if (firstName.length() < 3)
+        if (firstName.length() < 2)
             throw new InvalidValidationException("First name is too short.");
-        if (lastName.length() < 3)
+        if (lastName.length() < 2)
             throw new InvalidValidationException("Last name is too short.");
     }
 

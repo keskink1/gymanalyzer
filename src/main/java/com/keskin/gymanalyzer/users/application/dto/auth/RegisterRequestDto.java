@@ -1,6 +1,6 @@
-package com.keskin.gymanalyzer.users.application.dto;
+package com.keskin.gymanalyzer.users.application.dto.auth;
 
-public record UserRegisterRequestDto(
+public record RegisterRequestDto(
         String firstName,
         String lastName,
         int age,
