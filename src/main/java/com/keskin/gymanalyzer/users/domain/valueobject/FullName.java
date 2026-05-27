@@ -4,19 +4,18 @@ import com.keskin.gymanalyzer.common.exception.InvalidValidationException;
 
 import java.util.Objects;
 
-public record FullName (
-        String firstName,
-        String lastName
-){
+public class FullName {
+    private final String firstName;
+    private final String lastName;
 
     public FullName(String firstName, String lastName) {
         String trimmedFirst = firstName == null ? null : firstName.trim();
-        String trimmedLast  = lastName  == null ? null : lastName.trim();
+        String trimmedLast = lastName == null ? null : lastName.trim();
 
         validate(trimmedFirst, trimmedLast);
 
         this.firstName = trimmedFirst;
-        this.lastName  = trimmedLast;
+        this.lastName = trimmedLast;
     }
 
     private void validate(String firstName, String lastName) {
@@ -40,6 +39,14 @@ public record FullName (
     @Override
     public int hashCode() {
         return Objects.hash(firstName, lastName);
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     public String getDisplayName() {

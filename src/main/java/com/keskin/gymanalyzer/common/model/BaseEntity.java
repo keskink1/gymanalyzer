@@ -28,8 +28,7 @@ public abstract class BaseEntity {
     }
 
     // Calls from db
-    protected BaseEntity(UUID uuid, LocalDateTime createdAt, String createdBy, boolean deleted, LocalDateTime deletedAt, String deletedBy,
-                         LocalDateTime updatedAt, String updatedBy) {
+    protected BaseEntity(UUID uuid, LocalDateTime createdAt, String createdBy, boolean deleted, LocalDateTime deletedAt, String deletedBy, LocalDateTime updatedAt, String updatedBy) {
         this.uuid = Objects.requireNonNull(uuid, "uuid cannot be null");
         this.createdAt = Objects.requireNonNull(createdAt, "createdAt cannot be null");
         this.createdBy = Objects.requireNonNull(createdBy, "createdBy cannot be null");
@@ -50,16 +49,5 @@ public abstract class BaseEntity {
     @Override
     public int hashCode() {
         return uuid.hashCode();
-    }
-
-    protected void markAsDeleted(String deletedBy) {
-        this.deleted = true;
-        this.deletedAt = LocalDateTime.now();
-        this.deletedBy = Objects.requireNonNull(deletedBy, "deletedBy cannot be null");
-    }
-
-    protected void updateAudit(String updatedBy) {
-        this.updatedAt = LocalDateTime.now();
-        this.updatedBy = Objects.requireNonNull(updatedBy, "updatedBy cannot be null");
     }
 }

@@ -47,57 +47,36 @@ public class User extends BaseEntity {
         this.role = Role.USER;
     }
 
-    private void validateAuditor(String auditor){
-        if (auditor == null || auditor.isBlank()) {
-            throw new InvalidValidationException("Auditor information is required.");
-        }
-    }
-
     public void promoteToAdmin(String auditor) {
-        validateAuditor(auditor);
-
         if (this.role == Role.ADMIN) {
             return;
         }
 
         role = Role.ADMIN;
-        updateAudit(auditor);
     }
 
     public void deleteUser(String auditor) {
         if (this.role == Role.ADMIN){
              throw new InvalidValidationException("Admins can't be deleted!");
         }
-
-        validateAuditor(auditor);
-
-        markAsDeleted(auditor);
     }
 
     public void updateFullName(FullName newFullName, String auditor) {
-        validateAuditor(auditor);
         this.fullName = newFullName;
-        updateAudit(auditor);
     }
 
     public void updateAge(Age newAge, String auditor) {
-        validateAuditor(auditor);
         this.age = newAge;
-        updateAudit(auditor);
     }
 
     public void updateEmail(Email newEmail, String auditor) {
-        validateAuditor(auditor);
         this.email = newEmail;
-        updateAudit(auditor);
     }
 
     public void changePassword(Password newPassword, String auditor){
         if (newPassword.equals(this.password)){
             throw new InvalidValidationException("New password can't be same with old password");
         }
-        validateAuditor(auditor);
         this.password = newPassword;
-        updateAudit(auditor);
     }
 }
